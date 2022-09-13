@@ -5,3 +5,28 @@
 #los mecanicos que hacen las reparaciones y los clientes a los que se atienden.
  
  */
+
+public class Mecanico
+{
+
+}
+
+public class Auto
+{
+
+}
+
+public class Cliente
+{
+
+}
+
+public class Reparacion
+{
+
+}
+
+public class Repuesto
+{
+
+}
