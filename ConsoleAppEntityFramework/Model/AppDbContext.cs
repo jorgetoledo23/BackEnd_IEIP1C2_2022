@@ -7,8 +7,8 @@ namespace ConsoleAppEntityFramework.Model
     {
 
         public DbSet<Producto> Productos { get; set; }
-
-
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Venta> Ventas { get; set; }
 
         //override onConfiguring
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
