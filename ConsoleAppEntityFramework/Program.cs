@@ -1,88 +1,31 @@
 ﻿using ConsoleAppEntityFramework.Model;
 
-/*
-Insertar 
- */
-
-var context = new AppDbContext();
-
-var P = new Producto()
+do
 {
-    Name = "Leche",
-    Precio = 123,
-    Stock = 123,
-    UrlImagen = "www.google.cl"
-};
+    Console.WriteLine("[1] - Agregar Categoria");
+    Console.WriteLine("[2] - Listar Categorias");
+    Console.WriteLine("[3] - Actualizar Categoria Existente");
+    Console.WriteLine("[4] - Buscar Categoria por ID");
+    Console.WriteLine("[5] - Buscar Categoria por Nombre");
 
-var C = new Cliente()
-{
-    Rut = "11.111.111-1",
-    Nombre = "Juan",
-    Apellido = "Perez",
-    Telefono = "12345678"
-};
+    Console.WriteLine("\n============================\n");
 
-// Insert into Productos
+    Console.WriteLine("[6] - Agregar Producto");
+    Console.WriteLine("[7] - Listar Productos");
+    Console.WriteLine("[8] - Actualizar Producto Existente");
+    Console.WriteLine("[9] - Buscar Producto por ID");
+    Console.WriteLine("[10] - Buscar Productos por Nombre de Categoria");
 
-context.Add(P);
-context.Add(C);
+    Console.Write("\nSelecciona una Opcion: ");
+    var opcionSeleccionada = Console.ReadLine();
 
-context.SaveChanges();
+    switch (opcionSeleccionada)
+    {
+        case "1":
+            var x = 1;
+            break;
+        default:
+            break;
+    }
 
-
-/*
-Leer 
- */
-
-//Select * From Clientes / Productos
-
-var Clientes = context.Clientes.ToList();
-var Productos = context.Productos.ToList();
-
-
-var ClientesOrdenadosASC = context.Clientes.OrderBy(x => x.Nombre).ToList();
-var ClientesOrdenadosDESC = context.Clientes.OrderByDescending(x => x.Nombre).ToList();
-
-var ClienteBuscado = context.Clientes.Where(x => x.Nombre.Equals("Juan")).FirstOrDefault(); //TOP 1
-var ClienteBuscado2 = context.Clientes.Where(x => x.Nombre.Equals("Juan")).ToList(); //Todos Juan
-
-var ClientesConJ = context.Clientes.Where(x => x.Nombre.StartsWith("j")).ToList();
-
-string rut = "x";
-//Cliente con el rut especificado
-var ClienteRut = context.Clientes.Where(x => x.Rut.Equals(rut)).FirstOrDefault();
-
-string filtro = "Parlante";
-//Todos los productos que contengan la palabra filtro
-var ProductosFiltrados = context.Productos
-    .Where(p=> p.Name.Contains(filtro)).ToList();
-
-//Todos los productos que contengan la palabra filtro
-//y su precio sea menor a 100.000
-var ProductosFiltrados2 = context.Productos
-    .Where(p => p.Name.Contains(filtro) && p.Precio < 100000).ToList();
-
-
-
-/* Actualizar  
- * Update Clientes set Telefono = '12341234' Where Rut = 'x' */
-
-ClienteRut.Telefono = "+56 9 1234 5678";
-
-
-var clienteModificado = context.Attach(ClienteRut);
-clienteModificado.Property(x => x.Telefono).IsModified = true;
-context.SaveChanges();
-
-
-context.Update(ClienteRut);
-context.SaveChanges();
-
-
-/* Eliminar */
-
-context.Remove(ClienteRut);
-context.SaveChanges();
-
-
-
+} while (true);
