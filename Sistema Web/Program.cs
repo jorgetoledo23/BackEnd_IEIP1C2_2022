@@ -1,7 +1,11 @@
+using Sistema_Web.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Servicio 
+builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 

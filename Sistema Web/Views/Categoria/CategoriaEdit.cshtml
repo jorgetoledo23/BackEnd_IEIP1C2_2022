@@ -1,0 +1,42 @@
+﻿@model Sistema_Web.Models.Categoria
+
+@{
+    ViewData["Title"] = "CategoriaEdit";
+}
+
+<div class="card m-3">
+    <div class="card-body">
+        <h5 class="card-title">Edicion de Categoria <strong>@Model.Nombre</strong></h5>
+        <a asp-controller="Categoria" asp-action="CategoriaHome"
+           class="btn btn-outline-primary">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            Volver al Listado de Categorias
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CategoriaEdit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CategoriaId" />
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" value="@Model.Nombre" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control"  value="@Model.Descripcion"/>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar Cambios" class="btn btn-outline-primary col-12 mt-3 mb-3" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
