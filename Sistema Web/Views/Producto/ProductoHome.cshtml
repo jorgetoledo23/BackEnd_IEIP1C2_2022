@@ -1,8 +1,51 @@
-﻿<ul class="list-group">
-    <li class="list-inline-item m-3">
-        <a class="btn btn-outline-success">Crear Producto</a>
-    </li>
-    <li class="list-inline-item m-3">
-        <a class="btn btn-outline-success">Listar Productos</a>
-    </li>
-</ul>
+﻿@model List<Producto>
+
+<div class="card m-3">
+    <div class="card-body text-center">
+        <h5 class="card-title">Administracion de Productos</h5>
+        <p class="card-text">Administra los Productos del Sistema agregando, actualizando o eliminado.</p>
+        <a asp-controller="Producto" asp-action="ProductoCreate"
+           class="btn btn-outline-primary">
+            <i class="fa-solid fa-circle-plus"></i>
+            Crear Nuevo Producto
+        </a>
+    </div>
+</div>
+
+<div class="m-3">
+    <table class="table table-sm text-center">
+        <thead>
+            <tr>
+                <th>Producto Id</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Imagen</th>
+                <th>Categoria</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in Model)
+            {
+                <tr>
+                    <td>@producto.ProductoId</td>
+                    <td>@producto.Nombre</td>
+                    <td>@producto.Descripcion</td>
+                    <td>@producto.Precio</td>
+                    <td>@producto.Stock</td>
+                    <td><img class="img-fluid" height="100" width="100" src="@producto.UrlImagen" /></td>
+                    <td>@producto.Categoria.Nombre</td>
+                    <td>
+                        <a asp-controller="Producto" asp-action="ProductoEdit" 
+                        asp-route-Id="@producto.ProductoId"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a asp-controller="Producto" asp-action="EliminarProducto"
+                       asp-route-Id="@producto.ProductoId"
+                       onclick="return confirm('Estas Seguro?')"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

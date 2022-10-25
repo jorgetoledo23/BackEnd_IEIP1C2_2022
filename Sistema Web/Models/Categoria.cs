@@ -6,10 +6,11 @@ namespace Sistema_Web.Models
     {
         public int CategoriaId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo Nombre es Obligatorio!")]
+
         public string? Nombre { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo Descripcion es Obligatorio!")]
         public string? Descripcion { get; set; }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sistema_Web.Models;
 
 namespace Sistema_Web.Controllers
@@ -12,9 +13,10 @@ namespace Sistema_Web.Controllers
             _context = context;
         }
 
-        public IActionResult CategoriaHome()
+        public async Task<IActionResult> CategoriaHome()
         {
-            return View(_context.Categorias.ToList());
+            var categories = await _context.Categorias.ToListAsync();
+            return View(categories);
         }
 
         [HttpGet]

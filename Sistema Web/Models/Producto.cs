@@ -9,6 +9,6 @@
         public int Stock { get; set; }
         public string UrlImagen { get; set; }
         public int CategoriaId { get; set; }
-        public Categoria Categoria { get; set; }
+        public Categoria? Categoria { get; set; }
     }
 }
