@@ -19,6 +19,55 @@ namespace Sistema_Web.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult LoginIn(LoginInViewModel Lvm)
+        {
+            var Usuarios = _context.Usuarios.ToList();
+            if (Usuarios.Count == 0)
+            {
+                Usuario U = new Usuario();
+                U.Name = "Administrador";
+                U.Email = "admin@admin.cl";
+                U.Username = "admin";
+                U.Rol = "SuperAdministrador";
+                CreatePasswordHash("admin", out byte[] PasswordHash, out byte[] PasswordSalt);
+                U.PasswordHash = PasswordHash;
+                U.PasswordSalt = PasswordSalt;
+                _context.Add(U);
+                _context.SaveChanges();
+            }
+            else
+            {
+                //Proceso de Verificacion
+                var Us = _context.Usuarios
+                    .Where(u => u.Username.Equals(Lvm.Username)).FirstOrDefault();
+
+                if(Us != null)
+                {
+                    if(VerificarPass(Lvm.Password, Us.PasswordHash, Us.PasswordSalt))
+                    {
+                        //LoginIn
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Contraseña Incorrecta!");
+                        return View(Lvm);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Usuario NO Existe!");
+                    return View(Lvm);
+                }
+
+
+            }
+
+
+
+            return View();
+        }
+
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
