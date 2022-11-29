@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Sistema_Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Servicio 
 builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie("Cookies", options =>
+    {
+        options.LoginPath = "/Auth/LoginIn";
+        options.LogoutPath = "/Auth/LogOut";
+        options.AccessDeniedPath = "/Auth/AccessDenied";
+    });
+
+builder.Services.AddSession();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -22,7 +35,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization(); //Middleware
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",

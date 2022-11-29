@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Sistema_Web.Models;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 
@@ -20,7 +23,7 @@ namespace Sistema_Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult LoginIn(LoginInViewModel Lvm)
+        public async Task<IActionResult> LoginIn(LoginInViewModel Lvm)
         {
             var Usuarios = _context.Usuarios.ToList();
             if (Usuarios.Count == 0)
@@ -47,6 +50,24 @@ namespace Sistema_Web.Controllers
                     if(VerificarPass(Lvm.Password, Us.PasswordHash, Us.PasswordSalt))
                     {
                         //LoginIn
+                        var Claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, Us.Name),
+                            new Claim(ClaimTypes.NameIdentifier, Lvm.Username),
+                            new Claim(ClaimTypes.Role, Us.Rol)
+                        };
+
+                        //Carnet, Licencia
+                        var identity = new ClaimsIdentity(Claims,
+                            CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        var principal = new ClaimsPrincipal(identity);
+
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                            new AuthenticationProperties { IsPersistent = true }
+                            );
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -67,6 +88,18 @@ namespace Sistema_Web.Controllers
 
             return View();
         }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(LoginIn));
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
